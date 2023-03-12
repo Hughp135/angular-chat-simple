@@ -1,0 +1,5 @@
+<button (click)="fetchMore()">Load more</button>
+<p *ngIf="!messages.length">Loading messages...</p>
+<p *ngFor="let message of messages">
+  {{ message.datetime }} {{ message.text }}
+</p>

@@ -1,0 +1,6 @@
+.chat-box {
+  display: flex;
+  flex-direction: column-reverse;
+  height: 80vh;
+  overflow-y: auto;
+}

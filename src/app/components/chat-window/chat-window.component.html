@@ -1,5 +1,32 @@
-<button (click)="fetchMore()">Load more</button>
-<p *ngIf="!messages.length">Loading messages...</p>
-<p *ngFor="let message of messages">
-  {{ message.datetime }} {{ message.text }}
-</p>
+<div class="card chat-container">
+  <p *ngIf="!messages.length">Loading messages...</p>
+  <div id="chat-messages">
+    <ul class="chat-box chatContainerScroll" #container>
+      <li class="chat-left" *ngFor="let message of messages">
+        <div class="chat-avatar">
+          <img src="/assets/{{ message.userId }}.png" alt="User" />
+          <div class="chat-name">
+            {{ message.userId }}
+          </div>
+        </div>
+        <div class="chat-text">
+          {{ message.text }}
+        </div>
+        <div class="chat-hour">
+          {{ message.datetime | date : "H:mm" }}
+        </div>
+      </li>
+
+      <li class="chat-left">
+        <button
+          class="btn btn-info"
+          (click)="fetchMore()"
+          [disabled]="!hasMore"
+        >
+          {{ hasMore ? "Read more " : "No more messages" }}
+          <i *ngIf="hasMore" class="fa fa-arrow-up"></i>
+        </button>
+      </li>
+    </ul>
+  </div>
+</div>

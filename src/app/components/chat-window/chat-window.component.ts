@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild, ElementRef } from '@angular/core';
 import { ApiService } from 'src/app/services/api.service';
 import { MessageEnum } from 'src/generated/graphql';
 
@@ -9,6 +9,8 @@ import { MessageEnum } from 'src/generated/graphql';
 })
 export class ChatWindowComponent {
   messages: MessageEnum[] = [];
+  @ViewChild('container') chatContainer!: ElementRef;
+  hasMore = true;
 
   constructor(private readonly apiService: ApiService) {}
 
@@ -26,8 +28,19 @@ export class ChatWindowComponent {
     }
 
     this.apiService.fetchMore(lastMessage.messageId).subscribe((data) => {
-      this.messages = [...this.messages, ...data];
-      console.log(this.messages);
+      if (data.length < 10) {
+        this.hasMore = false;
+      }
+
+      if (data.length) {
+        this.messages = [...this.messages, ...data];
+        console.log(this.messages);
+        setTimeout(() => {
+          console.log(this.chatContainer.nativeElement);
+          this.chatContainer.nativeElement.scrollTop =
+            -this.chatContainer.nativeElement.scrollHeight;
+        });
+      }
     });
   }
 }

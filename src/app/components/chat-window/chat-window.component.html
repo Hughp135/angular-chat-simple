@@ -3,7 +3,8 @@
 
   <div id="chat-messages">
     <ul class="chat-box chatContainerScroll" #container *ngIf="!loading">
-      <li class="chat-left" *ngFor="let message of messages">
+      <li [ngClass]="{'chat-left': message.userId !== selectedUser, 'chat-right': message.userId === selectedUser}"
+        *ngFor="let message of messages">
         <div class="chat-avatar">
           <img src="/assets/{{ message.userId }}.png" alt="User" />
           <div class="chat-name">

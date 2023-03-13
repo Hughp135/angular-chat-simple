@@ -8,8 +8,8 @@ import { ChannelId, UserId } from 'src/generated/graphql';
 })
 export class AppComponent {
   selectedChannel: ChannelId = ChannelId.General;
-  availableChannels = [ChannelId.General, ChannelId.Lgtm, ChannelId.Technology];
   selectedUser: UserId = UserId.Joyse;
+  availableChannels = [ChannelId.General, ChannelId.Lgtm, ChannelId.Technology];
   availableUsers = [UserId.Joyse, UserId.Russell, UserId.Sam];
 
   onUserChanged(value: string) {

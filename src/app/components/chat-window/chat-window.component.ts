@@ -7,8 +7,15 @@ import {
 } from '@angular/core';
 import { ApiService } from 'src/app/services/api.service';
 import { ChannelId, MessageEnum, UserId } from 'src/generated/graphql';
-import { faArrowUp } from '@fortawesome/free-solid-svg-icons';
+import {
+  faArrowUp,
+  faPaperPlane,
+  faCircleExclamation,
+} from '@fortawesome/free-solid-svg-icons';
 import { Subscription } from 'rxjs';
+import { FormControl, Validators } from '@angular/forms';
+
+type MessageEntry = MessageEnum & { error?: boolean };
 
 @Component({
   selector: 'app-chat-window',
@@ -16,11 +23,14 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./chat-window.component.scss'],
 })
 export class ChatWindowComponent {
-  messages: MessageEnum[] = [];
-  hasMoreMessages = true;
-  arrowUp = faArrowUp;
   private channelSubscription?: Subscription;
+  messages: MessageEntry[] = [];
+  hasMoreMessages = true;
+  arrowUpIcon = faArrowUp;
+  sendIcon = faPaperPlane;
+  errorIcon = faCircleExclamation;
   loading = true;
+  chatInput = new FormControl('', Validators.required);
 
   @Input() selectedChannel!: ChannelId;
   @Input() selectedUser!: UserId;
@@ -65,11 +75,37 @@ export class ChatWindowComponent {
           this.messages = [...this.messages, ...data];
           console.log(this.messages);
           setTimeout(() => {
-            console.log(this.chatContainer.nativeElement);
             this.chatContainer.nativeElement.scrollTop =
               -this.chatContainer.nativeElement.scrollHeight;
           });
         }
       });
+  }
+
+  onMessageSent() {
+    if (this.chatInput.value) {
+      const text = this.chatInput.value;
+      this.apiService
+        .postMessage(this.selectedChannel, this.selectedUser, text)
+        .subscribe({
+          next: ({ data }) => {
+            if (data?.MessagePost) {
+              this.messages = [data.MessagePost, ...this.messages];
+            }
+          },
+          error: (e) => {
+            const msg: MessageEntry = {
+              datetime: new Date(),
+              messageId: `${new Date().getTime()}`,
+              text: text,
+              userId: this.selectedUser,
+              error: true,
+            };
+            this.messages = [msg, ...this.messages];
+          },
+        });
+
+      this.chatInput.patchValue('');
+    }
   }
 }

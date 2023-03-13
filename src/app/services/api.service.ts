@@ -7,6 +7,9 @@ import {
   ChannelId,
   MessageEnum,
   QueriesFetchMoreMessagesArgs,
+  Mutations,
+  MutationsMessagePostArgs,
+  UserId,
 } from 'src/generated/graphql';
 
 export const GET_LATEST_MESSAGES = gql<Queries, QueriesMessagesFetchLatestArgs>`
@@ -27,6 +30,21 @@ export const GET_MORE_MESSAGES = gql<Queries, QueriesFetchMoreMessagesArgs>`
     $old: Boolean!
   ) {
     MessagesFetchMore(channelId: $channelId, messageId: $messageId, old: $old) {
+      datetime
+      messageId
+      text
+      userId
+    }
+  }
+`;
+
+export const POST_MESSAGE = gql<Mutations, MutationsMessagePostArgs>`
+  mutation PostMessage(
+    $channelId: ChannelId!
+    $userId: UserId!
+    $text: String!
+  ) {
+    MessagePost(channelId: $channelId, text: $text, userId: $userId) {
       datetime
       messageId
       text
@@ -63,5 +81,12 @@ export class ApiService {
         filter((result) => !!result?.data?.MessagesFetchLatest),
         map((result) => result.data.MessagesFetchLatest as MessageEnum[])
       );
+  }
+
+  postMessage(channelId: ChannelId, userId: UserId, text: string) {
+    return this.apollo.mutate({
+      mutation: POST_MESSAGE,
+      variables: { channelId, userId, text },
+    });
   }
 }

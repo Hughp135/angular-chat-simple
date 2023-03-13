@@ -16,15 +16,25 @@
         </div>
         <div class="chat-hour">
           {{ message.datetime | date : "H:mm" }}
+          <fa-icon *ngIf="message.error" [icon]="errorIcon" [style]="{'color' : '#b71e3c'}"></fa-icon>
+          <span *ngIf="message.error" class="chat-message">Error</span>
         </div>
       </li>
 
       <li class="chat-left">
         <button class="btn btn-info" (click)="fetchMore()" [disabled]="!hasMoreMessages">
-          {{ hasMoreMessages ? "Read more " : "No more messages" }}
-          <fa-icon *ngIf="hasMoreMessages" [icon]="arrowUp"></fa-icon>
+          {{ hasMoreMessages ? "Read More " : "No more messages" }}
+          <fa-icon *ngIf="hasMoreMessages" [icon]="arrowUpIcon"></fa-icon>
         </button>
       </li>
     </ul>
+
+    <div class="form-group mt-3 mb-0">
+      <textarea [formControl]="chatInput" class="form-control" rows="3"
+        placeholder="Type your message here..."></textarea>
+      <button type="submit" class="btn btn-info" (click)="onMessageSent()">
+        Send Message <fa-icon [icon]="sendIcon"></fa-icon>
+      </button>
+    </div>
   </div>
 </div>

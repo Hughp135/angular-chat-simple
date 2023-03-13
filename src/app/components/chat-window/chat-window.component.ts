@@ -1,10 +1,4 @@
-import {
-  Component,
-  ViewChild,
-  ElementRef,
-  Input,
-  SimpleChanges,
-} from '@angular/core';
+import { Component, Input, SimpleChanges } from '@angular/core';
 import { ApiService } from 'src/app/services/api.service';
 import { ChannelId, MessageEnum, UserId } from 'src/generated/graphql';
 import {

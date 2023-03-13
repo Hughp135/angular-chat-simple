@@ -65,24 +65,19 @@
 .chat-right {
   justify-content: flex-end;
 
-  > .chat-avatar {
-    margin-right: 20px;
-    margin-left: 0;
+  > .li > .chat-text {
+    text-align: right;
+
+    &:before {
+      right: -20px;
+      border-color: transparent transparent transparent #ffffff;
+      left: inherit;
+    }
   }
 }
 
 .chat-avatar {
   margin-right: 20px;
-}
-
-li.chat-right > .chat-text {
-  text-align: right;
-
-  &:before {
-    right: -20px;
-    border-color: transparent transparent transparent #ffffff;
-    left: inherit;
-  }
 }
 
 .chat-hour {

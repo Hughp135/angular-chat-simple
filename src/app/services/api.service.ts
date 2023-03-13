@@ -41,11 +41,11 @@ export const GET_MORE_MESSAGES = gql<Queries, QueriesFetchMoreMessagesArgs>`
 export class ApiService {
   constructor(private apollo: Apollo) {}
 
-  fetchMore(messageId: string) {
+  fetchMore(channelId: ChannelId, messageId: string) {
     return this.apollo
       .watchQuery({
         query: GET_MORE_MESSAGES,
-        variables: { channelId: ChannelId.General, messageId, old: true },
+        variables: { channelId, messageId, old: true },
       })
       .valueChanges.pipe(
         filter((result) => !!result?.data?.MessagesFetchMore),
@@ -53,11 +53,11 @@ export class ApiService {
       );
   }
 
-  fetchLatest() {
+  fetchLatest(channelId: ChannelId) {
     return this.apollo
       .watchQuery({
         query: GET_LATEST_MESSAGES,
-        variables: { channelId: ChannelId.General },
+        variables: { channelId },
       })
       .valueChanges.pipe(
         filter((result) => !!result?.data?.MessagesFetchLatest),

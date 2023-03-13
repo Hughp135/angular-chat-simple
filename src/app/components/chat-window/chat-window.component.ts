@@ -1,7 +1,14 @@
-import { Component, ViewChild, ElementRef } from '@angular/core';
+import {
+  Component,
+  ViewChild,
+  ElementRef,
+  Input,
+  SimpleChanges,
+} from '@angular/core';
 import { ApiService } from 'src/app/services/api.service';
-import { MessageEnum } from 'src/generated/graphql';
+import { ChannelId, MessageEnum, UserId } from 'src/generated/graphql';
 import { faArrowUp } from '@fortawesome/free-solid-svg-icons';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-chat-window',
@@ -12,16 +19,32 @@ export class ChatWindowComponent {
   messages: MessageEnum[] = [];
   hasMoreMessages = true;
   arrowUp = faArrowUp;
+  private channelSubscription?: Subscription;
+  loading = true;
+
+  @Input() selectedChannel!: ChannelId;
+  @Input() selectedUser!: UserId;
 
   @ViewChild('container') chatContainer!: ElementRef;
 
   constructor(private readonly apiService: ApiService) {}
 
-  ngOnInit() {
-    this.apiService.fetchLatest().subscribe((data) => {
-      console.log('got latest messages', data);
-      this.messages = data;
-    });
+  ngOnInit() {}
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['selectedChannel']) {
+      if (this.channelSubscription) {
+        this.channelSubscription.unsubscribe();
+      }
+      this.loading = true;
+      this.hasMoreMessages = true;
+      this.channelSubscription = this.apiService
+        .fetchLatest(this.selectedChannel)
+        .subscribe((data) => {
+          this.messages = data;
+          this.loading = false;
+        });
+    }
   }
 
   fetchMore() {
@@ -31,20 +54,22 @@ export class ChatWindowComponent {
       throw new Error('No messages have been loaded yet');
     }
 
-    this.apiService.fetchMore(lastMessage.messageId).subscribe((data) => {
-      if (data.length < 10) {
-        this.hasMoreMessages = false;
-      }
+    this.apiService
+      .fetchMore(this.selectedChannel, lastMessage.messageId)
+      .subscribe((data) => {
+        if (data.length < 10) {
+          this.hasMoreMessages = false;
+        }
 
-      if (data.length) {
-        this.messages = [...this.messages, ...data];
-        console.log(this.messages);
-        setTimeout(() => {
-          console.log(this.chatContainer.nativeElement);
-          this.chatContainer.nativeElement.scrollTop =
-            -this.chatContainer.nativeElement.scrollHeight;
-        });
-      }
-    });
+        if (data.length) {
+          this.messages = [...this.messages, ...data];
+          console.log(this.messages);
+          setTimeout(() => {
+            console.log(this.chatContainer.nativeElement);
+            this.chatContainer.nativeElement.scrollTop =
+              -this.chatContainer.nativeElement.scrollHeight;
+          });
+        }
+      });
   }
 }

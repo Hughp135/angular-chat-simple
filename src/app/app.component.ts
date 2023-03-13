@@ -1,10 +1,22 @@
 import { Component } from '@angular/core';
+import { ChannelId, UserId } from 'src/generated/graphql';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  styleUrls: ['./app.component.scss'],
 })
 export class AppComponent {
-  title = 'chatapp-example';
+  selectedChannel: ChannelId = ChannelId.General;
+  availableChannels = [ChannelId.General, ChannelId.Lgtm, ChannelId.Technology];
+  selectedUser: UserId = UserId.Joyse;
+  availableUsers = [UserId.Joyse, UserId.Russell, UserId.Sam];
+
+  onUserChanged(value: string) {
+    this.selectedUser = UserId[value as UserId];
+  }
+
+  onChannelChanged(channel: ChannelId) {
+    this.selectedChannel = channel;
+  }
 }

@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ApiService } from 'src/app/services/api.service';
 
 import { ChatWindowComponent } from './chat-window.component';
 
@@ -8,9 +9,9 @@ describe('ChatWindowComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ChatWindowComponent ]
-    })
-    .compileComponents();
+      declarations: [ChatWindowComponent],
+      providers: [{ provide: ApiService, useValue: {} }],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(ChatWindowComponent);
     component = fixture.componentInstance;

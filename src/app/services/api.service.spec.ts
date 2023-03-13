@@ -4,7 +4,11 @@ import {
   ApolloTestingModule,
 } from 'apollo-angular/testing';
 import { ChannelId, Queries } from 'src/generated/graphql';
-import { ApiService, GET_LATEST_MESSAGES } from './api.service';
+import {
+  ApiService,
+  GET_LATEST_MESSAGES,
+  GET_MORE_MESSAGES,
+} from './api.service';
 import { ExecutionResult } from 'graphql';
 
 describe('ApiService', () => {
@@ -28,7 +32,7 @@ describe('ApiService', () => {
   });
 
   it('should fetch latest messages', () => {
-    service.fetchLatest().subscribe((result) => {
+    service.fetchLatest(ChannelId.General).subscribe((result) => {
       expect(result).toEqual([]);
     });
 
@@ -40,5 +44,21 @@ describe('ApiService', () => {
         MessagesFetchLatest: [],
       },
     } as ExecutionResult<{ MessagesFetchLatest: Queries['MessagesFetchLatest'] }>);
+  });
+
+  it('should fetch more messages', () => {
+    service.fetchMore(ChannelId.General, 'asd').subscribe((result) => {
+      expect(result).toEqual([]);
+    });
+
+    const op = controller.expectOne(GET_MORE_MESSAGES);
+    expect(op.operation.variables['channelId']).toEqual(ChannelId.General);
+    expect(op.operation.variables['messageId']).toEqual('asd');
+
+    op.flush({
+      data: {
+        MessagesFetchMore: [],
+      },
+    } as ExecutionResult<{ MessagesFetchMore: Queries['MessagesFetchMore'] }>);
   });
 });

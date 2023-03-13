@@ -1,8 +1,8 @@
 <div class="card chat-container">
-  <p *ngIf="!messages.length">Loading messages...</p>
+  <p *ngIf="loading">Loading messages...</p>
 
   <div id="chat-messages">
-    <ul class="chat-box chatContainerScroll" #container>
+    <ul class="chat-box chatContainerScroll" #container *ngIf="!loading">
       <li class="chat-left" *ngFor="let message of messages">
         <div class="chat-avatar">
           <img src="/assets/{{ message.userId }}.png" alt="User" />
@@ -19,11 +19,7 @@
       </li>
 
       <li class="chat-left">
-        <button
-          class="btn btn-info"
-          (click)="fetchMore()"
-          [disabled]="!hasMoreMessages"
-        >
+        <button class="btn btn-info" (click)="fetchMore()" [disabled]="!hasMoreMessages">
           {{ hasMoreMessages ? "Read more " : "No more messages" }}
           <fa-icon *ngIf="hasMoreMessages" [icon]="arrowUp"></fa-icon>
         </button>

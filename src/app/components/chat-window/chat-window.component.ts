@@ -1,6 +1,7 @@
 import { Component, ViewChild, ElementRef } from '@angular/core';
 import { ApiService } from 'src/app/services/api.service';
 import { MessageEnum } from 'src/generated/graphql';
+import { faArrowUp } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-chat-window',
@@ -9,13 +10,16 @@ import { MessageEnum } from 'src/generated/graphql';
 })
 export class ChatWindowComponent {
   messages: MessageEnum[] = [];
+  hasMoreMessages = true;
+  arrowUp = faArrowUp;
+
   @ViewChild('container') chatContainer!: ElementRef;
-  hasMore = true;
 
   constructor(private readonly apiService: ApiService) {}
 
   ngOnInit() {
     this.apiService.fetchLatest().subscribe((data) => {
+      console.log('got latest messages', data);
       this.messages = data;
     });
   }
@@ -29,7 +33,7 @@ export class ChatWindowComponent {
 
     this.apiService.fetchMore(lastMessage.messageId).subscribe((data) => {
       if (data.length < 10) {
-        this.hasMore = false;
+        this.hasMoreMessages = false;
       }
 
       if (data.length) {

@@ -37,8 +37,6 @@ export class ChatWindowComponent {
   @Input() selectedChannel!: ChannelId;
   @Input() selectedUser!: UserId;
 
-  @ViewChild('container') chatContainer!: ElementRef;
-
   constructor(private readonly apiService: ApiService) {}
 
   ngOnInit() {}
@@ -79,12 +77,6 @@ export class ChatWindowComponent {
           this.messages = old
             ? [...this.messages, ...data]
             : [...data, ...this.messages];
-
-          setTimeout(() => {
-            this.chatContainer.nativeElement.scrollTop = old
-              ? -this.chatContainer.nativeElement.scrollHeight
-              : 0;
-          });
         }
       });
   }

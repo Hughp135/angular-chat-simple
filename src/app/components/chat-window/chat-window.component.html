@@ -2,7 +2,7 @@
   <p *ngIf="loading">Loading messages...</p>
 
   <div id="chat-messages">
-    <ul class="chat-box chatContainerScroll" #container *ngIf="!loading">
+    <ul class="chat-box chatContainerScroll" *ngIf="!loading">
       <li class="chat-left">
         <button class="btn btn-info" (click)="fetchMore(false)">
           Read More
@@ -30,7 +30,7 @@
 
       <li class="chat-left">
         <button class="btn btn-info" (click)="fetchMore(true)" [disabled]="!hasMoreMessages">
-          {{ hasMoreMessages ? "Read More " : "No more messages" }}
+          {{ hasMoreMessages ? "Read More " : "No older messages" }}
           <fa-icon *ngIf="hasMoreMessages" [icon]="arrowUpIcon"></fa-icon>
         </button>
       </li>

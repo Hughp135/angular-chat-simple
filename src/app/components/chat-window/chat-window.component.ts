@@ -9,6 +9,7 @@ import { ApiService } from 'src/app/services/api.service';
 import { ChannelId, MessageEnum, UserId } from 'src/generated/graphql';
 import {
   faArrowUp,
+  faArrowDown,
   faPaperPlane,
   faCircleExclamation,
 } from '@fortawesome/free-solid-svg-icons';
@@ -27,6 +28,7 @@ export class ChatWindowComponent {
   messages: MessageEntry[] = [];
   hasMoreMessages = true;
   arrowUpIcon = faArrowUp;
+  arrowDownIcon = faArrowDown;
   sendIcon = faPaperPlane;
   errorIcon = faCircleExclamation;
   loading = true;
@@ -47,36 +49,41 @@ export class ChatWindowComponent {
         this.channelSubscription.unsubscribe();
       }
       this.loading = true;
-      this.hasMoreMessages = true;
       this.channelSubscription = this.apiService
         .fetchLatest(this.selectedChannel)
         .subscribe((data) => {
           this.messages = data;
           this.loading = false;
+          this.hasMoreMessages = data.length === 10;
         });
     }
   }
 
-  fetchMore() {
-    const lastMessage = this.messages[this.messages.length - 1];
+  fetchMore(old: boolean) {
+    const lastMessage = old
+      ? this.messages[this.messages.length - 1]
+      : this.messages[0];
 
     if (!lastMessage) {
       throw new Error('No messages have been loaded yet');
     }
 
     this.apiService
-      .fetchMore(this.selectedChannel, lastMessage.messageId)
+      .fetchMore(this.selectedChannel, lastMessage.messageId, old)
       .subscribe((data) => {
-        if (data.length < 10) {
+        if (old && data.length < 10) {
           this.hasMoreMessages = false;
         }
 
         if (data.length) {
-          this.messages = [...this.messages, ...data];
-          console.log(this.messages);
+          this.messages = old
+            ? [...this.messages, ...data]
+            : [...data, ...this.messages];
+
           setTimeout(() => {
-            this.chatContainer.nativeElement.scrollTop =
-              -this.chatContainer.nativeElement.scrollHeight;
+            this.chatContainer.nativeElement.scrollTop = old
+              ? -this.chatContainer.nativeElement.scrollHeight
+              : 0;
           });
         }
       });
@@ -93,7 +100,7 @@ export class ChatWindowComponent {
               this.messages = [data.MessagePost, ...this.messages];
             }
           },
-          error: (e) => {
+          error: () => {
             const msg: MessageEntry = {
               datetime: new Date(),
               messageId: `${new Date().getTime()}`,

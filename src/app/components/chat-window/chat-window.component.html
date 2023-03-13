@@ -3,6 +3,13 @@
 
   <div id="chat-messages">
     <ul class="chat-box chatContainerScroll" #container *ngIf="!loading">
+      <li class="chat-left">
+        <button class="btn btn-info" (click)="fetchMore(false)">
+          Read More
+          <fa-icon [icon]="arrowDownIcon"></fa-icon>
+        </button>
+      </li>
+
       <li [ngClass]="{'chat-left': message.userId !== selectedUser, 'chat-right': message.userId === selectedUser}"
         *ngFor="let message of messages">
         <div class="chat-avatar">
@@ -22,7 +29,7 @@
       </li>
 
       <li class="chat-left">
-        <button class="btn btn-info" (click)="fetchMore()" [disabled]="!hasMoreMessages">
+        <button class="btn btn-info" (click)="fetchMore(true)" [disabled]="!hasMoreMessages">
           {{ hasMoreMessages ? "Read More " : "No more messages" }}
           <fa-icon *ngIf="hasMoreMessages" [icon]="arrowUpIcon"></fa-icon>
         </button>

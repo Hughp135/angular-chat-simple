@@ -48,7 +48,7 @@ describe('ApiService', () => {
   });
 
   it('should fetch more messages', () => {
-    service.fetchMore(ChannelId.General, 'asd').subscribe((result) => {
+    service.fetchMore(ChannelId.General, 'asd', true).subscribe((result) => {
       expect(result).toEqual([]);
     });
 

@@ -59,11 +59,12 @@ export const POST_MESSAGE = gql<Mutations, MutationsMessagePostArgs>`
 export class ApiService {
   constructor(private apollo: Apollo) {}
 
-  fetchMore(channelId: ChannelId, messageId: string) {
+  fetchMore(channelId: ChannelId, messageId: string, old: boolean) {
     return this.apollo
       .watchQuery({
+        fetchPolicy: 'no-cache',
         query: GET_MORE_MESSAGES,
-        variables: { channelId, messageId, old: true },
+        variables: { channelId, messageId, old },
       })
       .valueChanges.pipe(
         filter((result) => !!result?.data?.MessagesFetchMore),

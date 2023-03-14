@@ -27,7 +27,6 @@ export class ChatWindowComponent {
 
   ngOnInit() {
     this.chatService.messages.subscribe((value) => {
-      console.log(value);
       this.messages = value;
     });
     this.readMoreButtonClicked.subscribe(async (old) => {

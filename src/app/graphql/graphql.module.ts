@@ -7,23 +7,7 @@ const uri = 'https://angular-test-backend-yc4c5cvnnq-an.a.run.app/graphql'; // <
 export function createApollo(httpLink: HttpLink): ApolloClientOptions<any> {
   return {
     link: httpLink.create({ uri }),
-    cache: new InMemoryCache({
-      // typePolicies: {
-      //   Query: {
-      //     fields: {
-      //       MessagesFetchMore: {
-      //         keyArgs: ['channelId'],
-      //         merge(existing, incoming, { readField }) {
-      //           console.log('existing', existing);
-      //           console.log('incoming', incoming);
-      //           const messages = [...(existing || []), ...(incoming || [])];
-      //           return messages;
-      //         },
-      //       },
-      //     },
-      //   },
-      // },
-    }),
+    cache: new InMemoryCache(),
   };
 }
 

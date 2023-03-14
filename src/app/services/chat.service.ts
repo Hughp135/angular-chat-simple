@@ -9,14 +9,16 @@ import {
 import { ApiService } from './api.service';
 import { ChannelsService } from './channels.service';
 
-type MessageEntry = MessageEnum & { error?: boolean };
+export type MessageEntry = MessageEnum & { error?: boolean };
 
 @Injectable({
   providedIn: 'root',
 })
 export class ChatService {
   private _messages = new BehaviorSubject<MessageEntry[]>([]);
+  private _messagesLoading = new BehaviorSubject<boolean>(true);
   public readonly messages = this._messages.asObservable();
+  public readonly messagesLoading = this._messagesLoading.asObservable();
 
   private fetchLatestQueryRef: QueryRef<
     Pick<Queries, 'MessagesFetchLatest'>,
@@ -38,6 +40,7 @@ export class ChatService {
 
     this.fetchLatestQueryRef.valueChanges.subscribe(
       ({ data, loading }): void => {
+        this._messagesLoading.next(loading);
         if (loading) {
           return;
         }

@@ -1,6 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
-import { ChannelsService } from 'src/app/services/channels.service';
 import { UserId } from 'src/generated/graphql';
 
 import { UserSelectComponent } from './user-select.component';

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, distinctUntilChanged, Observable } from 'rxjs';
+import { BehaviorSubject, distinctUntilChanged } from 'rxjs';
 import { ChannelId, UserId } from 'src/generated/graphql';
 
 @Injectable({ providedIn: 'root' })

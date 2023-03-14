@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { ChannelId, UserId } from 'src/generated/graphql';
 
 @Component({
   selector: 'app-root',

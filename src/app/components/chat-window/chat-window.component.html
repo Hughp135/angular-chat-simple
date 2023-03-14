@@ -3,10 +3,10 @@
 </div>
 
 <div class="card chat-container">
-  <p *ngIf="loading">Loading messages...</p>
+  <p *ngIf="chatService.messagesLoading | async">Loading messages...</p>
 
   <div id="chat-messages">
-    <ul class="chat-box chatContainerScroll" *ngIf="!loading">
+    <ul class="chat-box chatContainerScroll" *ngIf="!(chatService.messagesLoading | async)">
       <li class="chat-left">
         <button class="btn btn-info" (click)="readMoreButtonClicked.next(false)">
           Read More

@@ -8,9 +8,10 @@ import { ChatWindowComponent } from './components/chat-window/chat-window.compon
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { ReactiveFormsModule } from '@angular/forms';
+import { ChannelListComponent } from './components/channel-list/channel-list.component';
 
 @NgModule({
-  declarations: [AppComponent, ChatWindowComponent],
+  declarations: [AppComponent, ChatWindowComponent, ChannelListComponent],
   imports: [
     BrowserModule,
     GraphQLModule,

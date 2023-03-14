@@ -8,10 +8,20 @@ import { AppComponent } from './app.component';
 })
 class MockChatWindowComponent {}
 
+@Component({
+  selector: 'app-channel-list',
+  template: '<p>Mock Channel List Component</p>',
+})
+class MockChannelListComponent {}
+
 describe('AppComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [AppComponent, MockChatWindowComponent],
+      declarations: [
+        AppComponent,
+        MockChatWindowComponent,
+        MockChannelListComponent,
+      ],
     }).compileComponents();
   });
 

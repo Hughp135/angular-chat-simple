@@ -22,21 +22,11 @@
                   </select>
                 </div>
                 <p>2. Choose your Channel</p>
-                <ul class="channels">
-                  <li class="channel" [ngClass]="{'active-channel': selectedChannel === channel}"
-                    *ngFor="let channel of availableChannels" (click)="onChannelChanged(channel)">
-                    <p class="name-time">
-                      <span class="name">{{ channel }} Channel</span>
-                    </p>
-                  </li>
-                </ul>
+                <app-channel-list />
               </div>
             </div>
             <div class="col-xl-8 col-lg-8 col-md-8 col-sm-9 col-9">
-              <div class="selected-channel">
-                <span>{{ selectedChannel }} Channel</span>
-              </div>
-              <app-chat-window [selectedChannel]="selectedChannel" [selectedUser]="selectedUser" />
+              <app-chat-window />
             </div>
           </div>
         </div>

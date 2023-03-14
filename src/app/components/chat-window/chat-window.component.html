@@ -1,16 +1,21 @@
+<div class="selected-channel">
+  <span>{{ selectedChannel | async }} Channel</span>
+</div>
+
 <div class="card chat-container">
   <p *ngIf="loading">Loading messages...</p>
 
   <div id="chat-messages">
     <ul class="chat-box chatContainerScroll" *ngIf="!loading">
       <li class="chat-left">
-        <button class="btn btn-info" (click)="fetchMore(false)">
+        <button class="btn btn-info" (click)="readMoreButtonClicked.next(false)">
           Read More
           <fa-icon [icon]="arrowDownIcon"></fa-icon>
         </button>
       </li>
 
-      <li [ngClass]="{'chat-left': message.userId !== selectedUser, 'chat-right': message.userId === selectedUser}"
+      <li
+        [ngClass]="{'chat-left': message.userId !== (selectedUser | async), 'chat-right': message.userId === (selectedUser | async)}"
         *ngFor="let message of messages">
         <div class="chat-avatar">
           <img src="/assets/{{ message.userId }}.png" alt="User" />
@@ -29,7 +34,8 @@
       </li>
 
       <li class="chat-left">
-        <button class="btn btn-info" (click)="fetchMore(true)" [disabled]="!hasMoreMessages || !messages.length">
+        <button class="btn btn-info" (click)="readMoreButtonClicked.next(true)"
+          [disabled]="!hasMoreMessages || !messages.length">
           {{ hasMoreMessages ? "Read More " : "No older messages" }}
           <fa-icon *ngIf="hasMoreMessages" [icon]="arrowUpIcon"></fa-icon>
         </button>

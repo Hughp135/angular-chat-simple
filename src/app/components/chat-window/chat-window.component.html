@@ -29,7 +29,7 @@
       </li>
 
       <li class="chat-left">
-        <button class="btn btn-info" (click)="fetchMore(true)" [disabled]="!hasMoreMessages">
+        <button class="btn btn-info" (click)="fetchMore(true)" [disabled]="!hasMoreMessages || !messages.length">
           {{ hasMoreMessages ? "Read More " : "No older messages" }}
           <fa-icon *ngIf="hasMoreMessages" [icon]="arrowUpIcon"></fa-icon>
         </button>

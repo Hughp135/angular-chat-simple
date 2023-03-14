@@ -37,18 +37,22 @@ export class ChatWindowComponent {
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes['selectedChannel']) {
-      if (this.channelSubscription) {
-        this.channelSubscription.unsubscribe();
-      }
-      this.loading = true;
-      this.channelSubscription = this.apiService
-        .fetchLatest(this.selectedChannel)
-        .subscribe((data) => {
-          this.messages = data;
-          this.loading = false;
-          this.hasMoreMessages = data.length === 10;
-        });
+      this.fetchLatest();
     }
+  }
+
+  fetchLatest() {
+    if (this.channelSubscription) {
+      this.channelSubscription.unsubscribe();
+    }
+    this.loading = true;
+    this.channelSubscription = this.apiService
+      .fetchLatest(this.selectedChannel)
+      .subscribe((data) => {
+        this.messages = data;
+        this.loading = false;
+        this.hasMoreMessages = data.length === 10;
+      });
   }
 
   fetchMore(old: boolean) {
@@ -56,8 +60,8 @@ export class ChatWindowComponent {
       ? this.messages[this.messages.length - 1]
       : this.messages[0];
 
-    if (!lastMessage) {
-      throw new Error('No messages have been loaded yet');
+    if (!old && !this.messages.length) {
+      return this.fetchLatest();
     }
 
     this.apiService

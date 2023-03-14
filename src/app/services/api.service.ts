@@ -76,6 +76,7 @@ export class ApiService {
     return this.apollo
       .watchQuery({
         query: GET_LATEST_MESSAGES,
+        fetchPolicy: 'network-only',
         variables: { channelId },
       })
       .valueChanges.pipe(

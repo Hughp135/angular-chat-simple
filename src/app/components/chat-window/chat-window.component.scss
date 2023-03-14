@@ -2,7 +2,7 @@
   display: flex;
   flex-direction: column-reverse;
   overflow-y: auto;
-  height: calc(100vh - 320px);
+  height: calc(100vh - 350px);
 }
 
 .chat-container {
@@ -13,17 +13,10 @@
     img {
       width: 48px;
       height: 48px;
-      -webkit-border-radius: 30px;
-      -moz-border-radius: 30px;
       border-radius: 30px;
     }
 
-    .chat-name {
-      font-size: 0.75rem;
-      color: #999999;
-      text-align: center;
-    }
-
+    .chat-name,
     .chat-message {
       font-size: 0.75rem;
       color: #999999;
@@ -32,8 +25,6 @@
 
     .chat-text {
       padding: 0.4rem 1rem;
-      -webkit-border-radius: 4px;
-      -moz-border-radius: 4px;
       border-radius: 4px;
       background: #ffffff;
       font-weight: 300;
@@ -65,7 +56,7 @@
 .chat-right {
   justify-content: flex-end;
 
-  > .li > .chat-text {
+  .li > .chat-text {
     text-align: right;
 
     &:before {
@@ -88,55 +79,36 @@
   flex-direction: row;
   align-items: center;
   justify-content: center;
-
-  > span.fa-check-circle {
-    font-size: 16px;
-    color: #9ec94a;
-  }
-
-  > span.fa-exclamation-circle {
-    font-size: 16px;
-    color: #b71e3c;
-  }
 }
 
 @media (max-width: 767px) {
-  .chat-container li.chat-left,
-  .chat-container li.chat-right {
-    flex-direction: column;
-    margin-bottom: 30px;
-  }
-  .chat-container li img {
-    width: 32px;
-    height: 32px;
-  }
-  .chat-container li.chat-left .chat-avatar {
-    margin: 0 0 5px 0;
-    display: flex;
-    align-items: center;
-  }
-  .chat-container li.chat-left .chat-hour {
-    justify-content: flex-end;
-  }
-  .chat-container li.chat-left .chat-name {
-    margin-left: 5px;
-  }
-  .chat-container li.chat-right .chat-avatar {
-    order: -1;
-    margin: 0 0 5px 0;
-    align-items: center;
-    display: flex;
-    justify-content: right;
-    flex-direction: row-reverse;
-  }
-  .chat-container li.chat-right .chat-hour {
-    justify-content: flex-start;
-    order: 2;
-  }
-  .chat-container li.chat-right .chat-name {
-    margin-right: 5px;
-  }
-  .chat-container li .chat-text {
-    font-size: 0.8rem;
+  .chat-container li {
+    img {
+      width: 32px;
+      height: 32px;
+    }
+    .chat-avatar {
+      margin: 0 0 5px 0;
+      display: flex;
+      align-items: center;
+    }
+
+    .chat-hour {
+      justify-content: flex-end;
+    }
+
+    .chat-name {
+      margin-left: 5px;
+    }
+
+    .chat-text {
+      font-size: 0.8rem;
+    }
+
+    &.chat-left,
+    &.chat-right {
+      flex-direction: column;
+      margin-bottom: 30px;
+    }
   }
 }

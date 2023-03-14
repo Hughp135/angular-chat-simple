@@ -14,14 +14,7 @@
           <div class="row no-gutters">
             <div class="col-xl-4 col-lg-4 col-md-4 col-sm-3 col-3">
               <div class="options-container">
-                <div class="form-group">
-                  <label for="exampleFormControlSelect1">1. Choose your user</label>
-                  <select class="form-control" id="exampleFormControlSelect1" #userSelect
-                    (change)="onUserChanged(userSelect.value)">
-                    <option *ngFor="let user of availableUsers" [value]="user">{{ user }}</option>
-                  </select>
-                </div>
-                <p>2. Choose your Channel</p>
+                <app-user-select />
                 <app-channel-list />
               </div>
             </div>

@@ -1,3 +1,5 @@
+<p>2. Choose your Channel</p>
+
 <ul class="channels">
   <li class="channel" [ngClass]="{'active-channel': (selectedChannel | async) === channel}"
     *ngFor="let channel of availableChannels" (click)="channelsService.changeChannel(channel)">

@@ -1,6 +1,12 @@
-import { Component } from '@angular/core';
+import { Component, createComponent } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { AppComponent } from './app.component';
+
+@Component({
+  selector: 'app-user-select',
+  template: '<p>Mock User Select Component</p>',
+})
+class MockUserSelectComponent {}
 
 @Component({
   selector: 'app-chat-window',
@@ -21,6 +27,7 @@ describe('AppComponent', () => {
         AppComponent,
         MockChatWindowComponent,
         MockChannelListComponent,
+        MockUserSelectComponent,
       ],
     }).compileComponents();
   });

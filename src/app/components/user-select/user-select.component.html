@@ -1,0 +1,6 @@
+<div class="form-group">
+  <label for="usersSelect">1. Choose your user</label>
+  <select [formControl]="userSelect" class="form-control" id="usersSelect">
+    <option *ngFor="let user of channelsService.availableUsers" [ngValue]="user">{{ user }}</option>
+  </select>
+</div>

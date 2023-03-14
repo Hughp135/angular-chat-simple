@@ -1,10 +1,8 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, distinctUntilChanged } from 'rxjs';
+import { BehaviorSubject, distinctUntilChanged, Observable } from 'rxjs';
 import { ChannelId, UserId } from 'src/generated/graphql';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable({ providedIn: 'root' })
 export class ChannelsService {
   private readonly _selectedChannel = new BehaviorSubject<ChannelId>(
     ChannelId.General

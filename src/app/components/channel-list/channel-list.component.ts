@@ -9,15 +9,5 @@ import { ChannelId, UserId } from 'src/generated/graphql';
   styleUrls: ['./channel-list.component.scss'],
 })
 export class ChannelListComponent {
-  availableChannels: ChannelId[];
-  availableUsers: UserId[];
-  selectedChannel: Observable<ChannelId>;
-  selectedUser: Observable<UserId>;
-
-  constructor(public readonly channelsService: ChannelsService) {
-    this.availableChannels = channelsService.availableChannels;
-    this.availableUsers = channelsService.availableUsers;
-    this.selectedChannel = channelsService.selectedChannel;
-    this.selectedUser = channelsService.selectedUser;
-  }
+  constructor(public readonly channelsService: ChannelsService) {}
 }

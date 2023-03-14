@@ -1,5 +1,5 @@
 <div class="selected-channel">
-  <span>{{ selectedChannel | async }} Channel</span>
+  <span>{{ channelsService.selectedChannel | async }} Channel</span>
 </div>
 
 <div class="card chat-container">
@@ -14,9 +14,10 @@
         </button>
       </li>
 
-      <li
-        [ngClass]="{'chat-left': message.userId !== (selectedUser | async), 'chat-right': message.userId === (selectedUser | async)}"
-        *ngFor="let message of messages">
+      <li [ngClass]="{
+          'chat-left': message.userId !== (channelsService.selectedUser | async),
+          'chat-right': message.userId === (channelsService.selectedUser | async)
+        }" *ngFor="let message of messages">
         <div class="chat-avatar">
           <img src="/assets/{{ message.userId }}.png" alt="User" />
           <div class="chat-name">
@@ -34,20 +35,12 @@
       </li>
 
       <li class="chat-left">
-        <button class="btn btn-info" (click)="readMoreButtonClicked.next(true)"
-          [disabled]="!hasMoreMessages || !messages.length">
-          {{ hasMoreMessages ? "Read More " : "No older messages" }}
-          <fa-icon *ngIf="hasMoreMessages" [icon]="arrowUpIcon"></fa-icon>
+        <button class="btn btn-info" (click)="readMoreButtonClicked.next(true)">
+          Read More
         </button>
       </li>
     </ul>
 
-    <div class="form-group mt-3 mb-0">
-      <textarea [formControl]="chatInput" class="form-control" rows="3"
-        placeholder="Type your message here..."></textarea>
-      <button type="submit" class="btn btn-info" (click)="onMessageSent()">
-        Send Message <fa-icon [icon]="sendIcon"></fa-icon>
-      </button>
-    </div>
+    <app-chat-input />
   </div>
 </div>

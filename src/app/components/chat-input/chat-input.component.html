@@ -1,0 +1,6 @@
+<div class="form-group mt-3 mb-0">
+  <textarea [formControl]="chatInput" class="form-control" rows="3" placeholder="Type your message here..."></textarea>
+  <button type="submit" class="btn btn-info" (click)="onMessageSent()">
+    Send Message <fa-icon [icon]="sendIcon"></fa-icon>
+  </button>
+</div>

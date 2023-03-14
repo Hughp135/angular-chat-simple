@@ -6,13 +6,16 @@ import {
   QueriesMessagesFetchLatestArgs,
   ChannelId,
   MessageEnum,
-  QueriesFetchMoreMessagesArgs,
   Mutations,
   MutationsMessagePostArgs,
   UserId,
+  QueriesMessagesFetchMoreArgs,
 } from 'src/generated/graphql';
 
-export const GET_LATEST_MESSAGES = gql<Queries, QueriesMessagesFetchLatestArgs>`
+export const GET_LATEST_MESSAGES = gql<
+  Pick<Queries, 'MessagesFetchLatest'>,
+  QueriesMessagesFetchLatestArgs
+>`
   query GetLatestMessages($channelId: ChannelId!) {
     MessagesFetchLatest(channelId: $channelId) {
       datetime
@@ -23,7 +26,10 @@ export const GET_LATEST_MESSAGES = gql<Queries, QueriesMessagesFetchLatestArgs>`
   }
 `;
 
-export const GET_MORE_MESSAGES = gql<Queries, QueriesFetchMoreMessagesArgs>`
+export const GET_MORE_MESSAGES = gql<
+  Pick<Queries, 'MessagesFetchMore'>,
+  QueriesMessagesFetchMoreArgs
+>`
   query GetMoreMessages(
     $channelId: ChannelId!
     $messageId: String!
@@ -38,7 +44,10 @@ export const GET_MORE_MESSAGES = gql<Queries, QueriesFetchMoreMessagesArgs>`
   }
 `;
 
-export const POST_MESSAGE = gql<Mutations, MutationsMessagePostArgs>`
+export const POST_MESSAGE = gql<
+  Pick<Mutations, 'MessagePost'>,
+  MutationsMessagePostArgs
+>`
   mutation PostMessage(
     $channelId: ChannelId!
     $userId: UserId!
@@ -62,7 +71,7 @@ export class ApiService {
   fetchMore(channelId: ChannelId, messageId: string, old: boolean) {
     return this.apollo
       .watchQuery({
-        fetchPolicy: 'no-cache',
+        fetchPolicy: 'network-only',
         query: GET_MORE_MESSAGES,
         variables: { channelId, messageId, old },
       })
@@ -77,12 +86,28 @@ export class ApiService {
       .watchQuery({
         query: GET_LATEST_MESSAGES,
         fetchPolicy: 'network-only',
+        notifyOnNetworkStatusChange: true,
         variables: { channelId },
       })
       .valueChanges.pipe(
         filter((result) => !!result?.data?.MessagesFetchLatest),
         map((result) => result.data.MessagesFetchLatest as MessageEnum[])
       );
+  }
+
+  fetchMoreQuery() {
+    return this.apollo.watchQuery({
+      query: GET_MORE_MESSAGES,
+      fetchPolicy: 'network-only',
+      notifyOnNetworkStatusChange: true,
+    });
+  }
+  latestQuery() {
+    return this.apollo.watchQuery({
+      query: GET_LATEST_MESSAGES,
+      fetchPolicy: 'network-only',
+      notifyOnNetworkStatusChange: true,
+    });
   }
 
   postMessage(channelId: ChannelId, userId: UserId, text: string) {

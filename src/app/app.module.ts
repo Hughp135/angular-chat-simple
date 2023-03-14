@@ -10,6 +10,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ChannelListComponent } from './components/channel-list/channel-list.component';
 import { UserSelectComponent } from './components/user-select/user-select.component';
+import { ChatInputComponent } from './components/chat-input/chat-input.component';
 
 @NgModule({
   declarations: [
@@ -17,6 +18,7 @@ import { UserSelectComponent } from './components/user-select/user-select.compon
     ChatWindowComponent,
     ChannelListComponent,
     UserSelectComponent,
+    ChatInputComponent,
   ],
   imports: [
     BrowserModule,
